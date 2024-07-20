@@ -1,7 +1,7 @@
-package me.redth.dragoneggesp.config
+package me.redth.bordertext.config
 
 import cc.polyfrost.oneconfig.hud.SingleTextHud
-import me.redth.dragoneggesp.CachedTextRenderer
+import me.redth.bordertext.CachedTextRenderer
 import net.minecraft.client.renderer.GlStateManager
 
 class TextOutline : SingleTextHud("cool", true) {

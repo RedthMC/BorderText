@@ -1,4 +1,4 @@
-package me.redth.dragoneggesp
+package me.redth.bordertext
 
 import cc.polyfrost.oneconfig.utils.dsl.mc
 import net.minecraft.client.renderer.texture.TextureUtil

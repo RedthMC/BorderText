@@ -1,16 +1,16 @@
-package me.redth.dragoneggesp
+package me.redth.bordertext
 
 import cc.polyfrost.oneconfig.utils.dsl.mc
-import me.redth.dragoneggesp.config.ModConfig
+import me.redth.bordertext.config.ModConfig
 import net.minecraft.client.resources.IReloadableResourceManager
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 
 @Mod(
-    modid = BlurTest.MODID, name = BlurTest.NAME, version = BlurTest.VERSION, modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter"
+    modid = BorderText.MODID, name = BorderText.NAME, version = BorderText.VERSION, modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter"
 )
-object BlurTest {
+object BorderText {
     const val MODID = "@ID@"
     const val NAME = "@NAME@"
     const val VERSION = "@VER@"

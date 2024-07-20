@@ -1,7 +1,7 @@
 package me.redth.bordertext.mixin;
 
-import me.redth.dragoneggesp.CachedTextRenderer;
-import me.redth.dragoneggesp.config.ModConfig;
+import me.redth.bordertext.CachedTextRenderer;
+import me.redth.bordertext.config.ModConfig;
 import net.minecraft.client.gui.FontRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

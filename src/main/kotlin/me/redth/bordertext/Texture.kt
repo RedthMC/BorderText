@@ -1,11 +1,10 @@
-package me.redth.dragoneggesp
+package me.redth.bordertext
 
 import cc.polyfrost.oneconfig.utils.dsl.mc
 import net.minecraft.client.renderer.texture.AbstractTexture
 import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
-import kotlin.properties.Delegates
 
 class Texture(path: String) : AbstractTexture() {
     private val location = ResourceLocation(path)

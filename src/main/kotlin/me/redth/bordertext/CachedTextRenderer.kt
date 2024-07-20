@@ -1,10 +1,10 @@
-package me.redth.dragoneggesp
+package me.redth.bordertext
 
 import cc.polyfrost.oneconfig.libs.universal.UChat
 import cc.polyfrost.oneconfig.utils.dsl.mc
 import me.redth.bordertext.mixin.FontRendererAccessor
 import me.redth.bordertext.mixin.OFFontRendererAccessor
-import me.redth.dragoneggesp.config.ModConfig
+import me.redth.bordertext.config.ModConfig
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
