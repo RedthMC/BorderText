@@ -1,0 +1,15 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.7",
+  "package": "me.redth.bordertext.mixin",
+  "refmap": "mixins.bordertext.refmap.json",
+  "injectors": {
+    "maxShiftBy": 5
+  },
+  "verbose": true,
+  "client": [
+    "FontRendererAccessor",
+    "FontRendererMixin",
+    "OFFontRendererAccessor"
+  ]
+}
