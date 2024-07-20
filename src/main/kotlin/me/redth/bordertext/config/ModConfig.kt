@@ -9,9 +9,6 @@ import me.redth.bordertext.BorderText
 
 object ModConfig : Config(Mod(BorderText.NAME, ModType.UTIL_QOL), "${BorderText.MODID}.json") {
 
-    @HUD(name = "text")
-    var text = TextOutline()
-
     @Slider(name = "threshold", min = 0f, max = 255f)
     var threshold = 128
 
