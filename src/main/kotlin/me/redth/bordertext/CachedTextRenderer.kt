@@ -1,11 +1,11 @@
 package me.redth.bordertext
 
-import cc.polyfrost.oneconfig.libs.universal.UChat
 import cc.polyfrost.oneconfig.utils.dsl.mc
+import me.redth.bordertext.config.ModConfig
 import me.redth.bordertext.mixin.FontRendererAccessor
 import me.redth.bordertext.mixin.OFFontRendererAccessor
-import me.redth.bordertext.config.ModConfig
 import net.minecraft.client.gui.FontRenderer
+import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
@@ -40,9 +40,14 @@ object CachedTextRenderer : FontRenderer(mc.gameSettings, ResourceLocation("text
             }
         }
 
+    override fun doDraw(f: Float) {
+        GlStateManager.translate(0.0, 0.0, 0.1)
+        super.doDraw(f)
+        GlStateManager.translate(0.0, 0.0, -0.1)
+    }
+
     override fun onResourceManagerReload(resourceManager: IResourceManager) {
         super.onResourceManagerReload(resourceManager)
-        val timeStart = System.currentTimeMillis()
 
         Arrays.stream(allTexture).parallel().forEach {
             it.load()
@@ -50,8 +55,6 @@ object CachedTextRenderer : FontRenderer(mc.gameSettings, ResourceLocation("text
         for (texture in allTexture) {
             texture.upload()
         }
-        val time = System.currentTimeMillis() - timeStart
-        UChat.chat("took $time ms full")
     }
 
     override fun renderDefaultChar(ch: Int, italic: Boolean): Float {
@@ -67,23 +70,24 @@ object CachedTextRenderer : FontRenderer(mc.gameSettings, ResourceLocation("text
         val ch = char.code
         val widthBits = glyphWidth[ch].toInt()
         if (widthBits == 0) return 0f
+        val first4bits = widthBits ushr 4
 
         renderBorderedChar(
             texture = allTexture[ch ushr 8],
             italic = italic,
             ch = ch,
+            startPixels = first4bits,
         )
 
-        val first4bits = widthBits ushr 4
         val last4bits = (widthBits and 0xF) + 1
         return (last4bits - first4bits) / 2f + 1f
     }
 
-    private fun renderBorderedChar(texture: CachedTexture, italic: Boolean, ch: Int) {
+    private fun renderBorderedChar(texture: CachedTexture, italic: Boolean, ch: Int, startPixels: Int = 0) {
         val italicShift = if (italic) 1.0f else 0.0f
         val column = ch and 0xF
         val row = (ch and 0xFF) ushr 4
-        val x = posX - 1f
+        val x = posX - 1f - startPixels / 2f
         val y = posY - 1f
         val u = column / 16f
         val v = row / 16f
