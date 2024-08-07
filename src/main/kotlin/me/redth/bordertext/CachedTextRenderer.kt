@@ -1,6 +1,9 @@
 package me.redth.bordertext
 
 import cc.polyfrost.oneconfig.utils.dsl.mc
+import me.redth.bordertext.cache.FontConfig
+import me.redth.bordertext.cache.TextCache
+import me.redth.bordertext.cache.TextWidthCache
 import me.redth.bordertext.config.ModConfig
 import me.redth.bordertext.mixin.FontRendererAccessor
 import me.redth.bordertext.mixin.OFFontRendererAccessor
@@ -32,13 +35,29 @@ object CachedTextRenderer : FontRenderer(mc.gameSettings, ResourceLocation("text
         super.setColor(r, g, b, a)
     }
 
-    override fun drawString(text: String, x: Float, y: Float, color: Int, dropShadow: Boolean) =
-        super.drawString(text, x, y, color, dropShadow).also {
+    override fun drawString(text: String, x: Float, y: Float, color: Int, dropShadow: Boolean): Int {
+        if (!ModConfig.cache) {
+            return super.drawString(text, x, y, color, dropShadow).apply {
+                if (!isLightColor) {
+                    isLightColor = true
+                    GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE)
+                }
+            }
+        }
+
+        GlStateManager.enableAlpha()
+        val config = FontConfig(text, color, dropShadow)
+        val cached = TextCache.getCache(config) ?: TextCache.createCache(config, getStringWidth(text)) {
+            super.drawString(text, 0f, 0f, color, dropShadow)
+        }
+
+        return cached.draw(x, y).apply {
             if (!isLightColor) {
                 isLightColor = true
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE)
             }
         }
+    }
 
     override fun doDraw(f: Float) {
         GlStateManager.translate(0.0, 0.0, 0.1)
@@ -48,6 +67,11 @@ object CachedTextRenderer : FontRenderer(mc.gameSettings, ResourceLocation("text
 
     override fun onResourceManagerReload(resourceManager: IResourceManager) {
         super.onResourceManagerReload(resourceManager)
+
+        if (ModConfig.cache) {
+            TextCache.clearAll()
+            TextWidthCache.clearAll()
+        }
 
         Arrays.stream(allTexture).parallel().forEach {
             it.load()
